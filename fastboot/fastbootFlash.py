@@ -6,16 +6,12 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog,QComboBox
-import sys,os, time
-import os,serial,datetime,time,requests,re,subprocess
+from PyQt5.QtCore import pyqtSignal
+import sys,os,serial,datetime,time,requests,re,subprocess,logging, threading
 import xml.etree.ElementTree as ET
 import serial.tools.list_ports
-from PyQt5.QtCore import pyqtSignal
-import logging
-
 
 class Ui_FastbootFlashMainWin(object):
     def setupUi(self, FastbootFlashMainWin):
@@ -87,21 +83,32 @@ class Ui_FastbootFlashMainWin(object):
         self.lcdNumber.setObjectName("lcdNumber")
         self.horizontalLayout_2.addWidget(self.lcdNumber)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
-        self.widget = QtWidgets.QWidget(self.centralwidget)
-        self.widget.setGeometry(QtCore.QRect(10, 10, 123,42))
-        self.widget.setObjectName("widget")
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.widget)
-        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.label_3 = QtWidgets.QLabel(self.widget)
+        # self.widget = QtWidgets.QWidget(self.centralwidget)
+        # self.widget.setGeometry(QtCore.QRect(10, 10, 123,42))
+        # self.widget.setObjectName("widget")
+        # self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.widget)
+        # self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
+        # self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        # self.label_3 = QtWidgets.QLabel(self.widget)
+        # self.label_3.setObjectName("label_3")
+        # self.horizontalLayout_3.addWidget(self.label_3)
+        # self.comboBox = CustomComboBox(self.widget)
+        # self.comboBox.setObjectName("comboBox")
+        # self.comboBox.setEditable(True)
+        self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_3.setGeometry(QtCore.QRect(275, 10, 50, 23))
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.pushButton_3.clicked.connect(self.pushBtn_Open) # test of get value of comboBox
+
+        self.label_3 = QtWidgets.QLabel(self.centralwidget)
+        self.label_3.setGeometry(QtCore.QRect(11, 11, 36, 16))
         self.label_3.setObjectName("label_3")
-        self.horizontalLayout_3.addWidget(self.label_3)
-        self.comboBox = CustomComboBox(self.widget)
-        self.comboBox.setObjectName("comboBox")
+        self.comboBox = CustomComboBox(self.centralwidget)
+        self.comboBox.setGeometry(QtCore.QRect(53, 11, 220, 20))
         self.comboBox.setEditable(True)
+        self.comboBox.setObjectName("comboBox")
 
-
-        self.horizontalLayout_3.addWidget(self.comboBox)
+        # self.horizontalLayout_3.addWidget(self.comboBox)
         self.widget1 = QtWidgets.QWidget(self.centralwidget)
         self.widget1.setGeometry(QtCore.QRect(360, 30, 156, 306))
         self.widget1.setObjectName("widget1")
@@ -216,6 +223,8 @@ class Ui_FastbootFlashMainWin(object):
         self.label_6.setText(_translate("FastbootFlashMainWin", "升级："))
         self.label_3.setText(_translate("FastbootFlashMainWin", "UART1:"))
         self.checkBox_13.setText(_translate("FastbootFlashMainWin", "全选"))
+        self.pushButton_3.setText(_translate("FastbootFlashMainWin", "打开"))
+
 
     def fileOpenFun1(self):
         self.versionDir1 = QFileDialog.getExistingDirectory(self,"选取文件夹",)#起始路径
@@ -241,6 +250,29 @@ class Ui_FastbootFlashMainWin(object):
         self.cursor = self.textBrowser.textCursor()
         self.textBrowser.moveCursor(self.cursor.End)  # 光标移到最后，这样就会自动显示出来
         QtWidgets.QApplication.processEvents()  # 一定加上这个功能，不然有卡顿
+
+    def main():
+        rt = ComThread()
+        rt.sendport = '**1*80*'
+        try:
+            if rt.start():
+                print(rt.l_serial.name)
+                rt.waiting()
+                print("The data is: %s, The Id is：%s" % (rt.data, rt.ID))
+                rt.stop()
+            else:
+                pass
+        except Exception as se:
+            pritn(str(se))
+
+            if rt.alive:
+                rt.stop()
+        print('')
+        print('End OK.')
+        trmp_ID = rt.ID
+        tem_data = rt.data
+        del rt
+        return temp_ID, temp_data
 
     def functionStart(self):
 
@@ -364,24 +396,11 @@ class Ui_FastbootFlashMainWin(object):
             debug_key = 'quectel123'
             return debug_key
 
-    def serialOpen(self, SPN, baudRate):
-        global serPort
-        try:
-            serPort = serial.Serial(SPN, baudRate, bytesize=8, parity='N', stopbits=1, timeout=1)
-            checkPort = serPort.isOpen()
-            if checkPort:
-                serPort.close()
-                serPort = serial.Serial(SPN, baudRate, bytesize=8, parity='N', timeout=1, xonxoff=False,
-                                        rtscts=False,
-                                        write_timeout=None, dsrdtr=False, inter_byte_timeout=None)
-                serOut = serPort.read(size=1024)
-                string_AT_R = serOut.decode(encoding="utf-8", errors="strict")
-                string_AT_R_array = string_AT_R.split('\r\n')
-                for i in string_AT_R_array:
-                    print(time.strftime("[serial:%Y-%m-%d %H:%M:%S]:", time.localtime()) + i + "\r\n")
-        except serial.serialutil.SerialException as e:
-            print("Error happens: ", e)
-            serPort.close()
+    def pushBtn_Open(self):
+        comboBobContent = self.comboBox.currentText()
+        comRegex = re.compile('(.*?) -.*')
+        comName = re.findall(comRegex,comboBobContent)[0]
+        self.serialOpen(comName)
 
     def excuteCommand(self, command, adbFlag=1, adbkeyFlag=0):
         global adbKey
@@ -403,14 +422,6 @@ class Ui_FastbootFlashMainWin(object):
                     if adbKeyResult:
                         adbKey = adbKeyResult[0]
                         return adbKey
-
-
-
-import serial
-import serial.tools.list_ports
-import logging
-from PyQt5.QtWidgets import QComboBox
-from PyQt5.QtCore import pyqtSignal
 
 
 class CustomComboBox(QComboBox):
@@ -442,6 +453,104 @@ class CustomComboBox(QComboBox):
                 yield str(port)
         except Exception as e:
             logging.error("获取接入的所有串口设备出错！\n错误信息："+str(e))
+class ComThread:
+    def __init__(self,Port='COM11'):
+        self.l_serial = None
+        self.alive = False
+        self.waitEnd = None
+        self.Port = Port
+        self.ID = None
+        self.data = None
+
+    def waiting(self):
+        if not self.waitEnd is None:
+            self.waitEnd.wait()
+
+    def SetStopEvent(self):
+        if not self.waitEnd is None:
+            self.waitEnd.set()
+        self.alive = False
+        self.stop()
+
+    def start(self):
+        self.l_serial = serial.Serial()
+        self.l_serial.port = self.port
+        self.l_serial.baudrate = 115200
+        # 设置等待时间，若超出这停止等待
+        self.l_serial.timeout = 2
+        self.l_serial.open()
+        # 判断串口是否已经打开
+        if self.l_serial.isOpen():
+            self.waitEnd = threading.Event()
+            self.alive = True
+            self.thread_read = None
+            self.thread_read = threading.Thread(target=self.FirstReader)
+            self.thread_read.setDaemon(1)
+            self.thread_read.start()
+            return True
+        else:
+            return False
+
+    def SendDate(self, send):
+        lmsg = ''
+        isOK = False
+        if isinstance(i_msg):
+            lmsg = i_msg.encode('gb18030')
+        else:
+            lmsg = i_msg
+        try:
+            # 发送数据到相应的处理组件
+            self.l_serial.write(send)
+        except Exception as ex:
+            pass;
+        return isOK
+
+    def FirstReader(self):
+        while self.alive:
+            time.sleep(0.1)
+
+            data = ''
+            data = data.encode('utf-8')
+
+            n = self.l_serial.inWaiting()
+            if n:
+                data = data + self.l_serial.read(n)
+                print('get data from serial port', data)
+                print(type(data))
+
+                n = self.l_serial.inWaiting()
+                if len(data) > 0 and n ==0:
+                    try:
+                        temp = data.decode('gb10830')
+                        print(type(temp))
+                        print(temp)
+                        car, temp = str(temp).split("\n",1)
+                        print(car, temp)
+
+                        string = str(temp).strip().split(":")[1]
+                        str_ID, str_data = str(string).split("*",1)
+
+                        print(str_ID)
+                        print(str_data)
+                        print(type(str_ID), type(str_data))
+
+                        if str_data[-1] == '*':
+                            break
+                        else:
+                            print(str_data[-1])
+                            print('str_data[-1]!=*')
+                    except:
+                        print("读卡错误，请重试！\n")
+        self.ID = str_ID
+        self.data = str_data[0:-1]
+        self.waitEnd.set()
+        self.alive = False
+
+    def stop(self):
+        self.alive = False
+        self.thread_read.join()
+        if self.l_serial.isOpen():
+            self.l_serial.close()
 
 
 

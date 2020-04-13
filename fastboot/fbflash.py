@@ -14,10 +14,11 @@ class Update(object):
         global filePath
         global dirPath
         global execBatFlag
+        global updateDir
         while True:
             dirPath = input('输入版本包路径，或者把包文件夹拖到此处：>>> ')
             filePath = dirPath + r'\update\partition_nand.xml'
-            updateDir =  dirPath + r'\update'
+            updateDir = dirPath + r'\update'
             if os.path.isdir(updateDir):
                 if not os.path.exists(filePath):
                     print('未找到partition.xml文件，请确保路径是否正确并重试！\n')
@@ -36,7 +37,7 @@ class Update(object):
     def makeBat(filePath,batName):
         fbat = open('./'+batName,'w+')
 
-        fbat.write('set path=' + dirPath + '\r\n')
+        fbat.write('set path=' + updateDir +'\r\n')
         tree = ET.parse(filePath)
         root = tree.getroot()
 
@@ -52,7 +53,7 @@ class Update(object):
                                 continue
                             else:
                                 fbat.seek(0, 2)
-                                strToWrite = 'fastboot flash ' + a1+ ' %path%/' + a2 + '\r\n'
+                                strToWrite = 'fastboot flash ' + a1+ ' %path%\\' + a2 + '\r\n'
                                 fbat.write(strToWrite)
 
         fbat.write('\r\nfastboot reboot\r\npause')
@@ -228,17 +229,17 @@ class paserKeyClass():
         self.opener.close()
 
 if __name__ == "__main__":
-    SPN = 'com4'
-    baudRate = 115200
-    serialType = 'uart1'
-    Update.serialOpen(SPN,baudRate)
-    Update.excuteCommand("ate1\r\n")
-    Update.excuteCommand("ati+csub\r\n")
-    adbKey = Update.excuteCommand("at+qadbkey?\r\n", adbFlag=1)
+    # SPN = 'com4'
+    # baudRate = 115200
+    # serialType = 'uart1'
+    # Update.serialOpen(SPN,baudRate)
+    # Update.excuteCommand("ate1\r\n")
+    # Update.excuteCommand("ati+csub\r\n")
+    # adbKey = Update.excuteCommand("at+qadbkey?\r\n", adbFlag=1)
     # adbkeySetCommand = "AT+QADBKEY=" + adbkeyQuery
     # print(adbkeySetCommand)
     # Update.excuteCommand(adbkeySetCommand)
     # print(adbKey)
-    # Update.getPath()
-    # Update.makeBat(filePath, batName)
-    # os.system('pause')
+    Update.getPath()
+    Update.makeBat(filePath, batName)
+    os.system('pause')

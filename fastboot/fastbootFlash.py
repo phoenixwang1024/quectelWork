@@ -88,7 +88,7 @@ class Ui_FastbootFlashMainWin(object):
         self.horizontalLayout_2.addWidget(self.lcdNumber)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.widget = QtWidgets.QWidget(self.centralwidget)
-        self.widget.setGeometry(QtCore.QRect(10, 10, 123, 22))
+        self.widget.setGeometry(QtCore.QRect(10, 10, 123,42))
         self.widget.setObjectName("widget")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.widget)
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
@@ -96,9 +96,10 @@ class Ui_FastbootFlashMainWin(object):
         self.label_3 = QtWidgets.QLabel(self.widget)
         self.label_3.setObjectName("label_3")
         self.horizontalLayout_3.addWidget(self.label_3)
-        self.comboBox = MyComboBox(self.widget)
+        self.comboBox = CustomComboBox(self.widget)
         self.comboBox.setObjectName("comboBox")
         self.comboBox.setEditable(True)
+
 
         self.horizontalLayout_3.addWidget(self.comboBox)
         self.widget1 = QtWidgets.QWidget(self.centralwidget)
@@ -405,25 +406,42 @@ class Ui_FastbootFlashMainWin(object):
 
 
 
-class MyComboBox(QComboBox):
+import serial
+import serial.tools.list_ports
+import logging
+from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtCore import pyqtSignal
+
+
+class CustomComboBox(QComboBox):
     popupAboutToBeShown = pyqtSignal()
+
+    def __init__(self, parent = None):
+        super(CustomComboBox,self).__init__(parent)
+
+    # 重写showPopup函数
     def showPopup(self):
-        self.popupAboutToBeShown.emit()
+        # 先清空原有的选项
+        self.clear()
+        self.insertItem(0, "COM")
+        index = 1
+        # 获取接入的所有串口信息，插入combobox的选项中
+        portlist = self.get_port_list(self)
+        if portlist is not None:
+            for i in portlist:
+                self.insertItem(index, i)
+                index += 1
+        QComboBox.showPopup(self)   # 弹出选项框
 
-        def get_port_list(self):
-            try:
-                port_list = list(serial.tools.list_ports.comports())
-                for port in port_list:
-                    yield str(port)
-            except Exception as e:
-                logging.error("获取接入的所有串口设备出错\n 错误信息："+str(e))
-
-            port_list = self.get_port_list(self)
-
-    # def mousePressEvent(self, QMouseEvent) #这个是重写鼠标点击事件
-        # self.popupAboutToBeShow.emit()
-    # def showPopup(self):
-    #     self.popupAboutToBeShown.emit() #发送信号
+    @staticmethod
+    # 获取接入的所有串口号
+    def get_port_list(self):
+        try:
+            port_list = list(serial.tools.list_ports.comports())
+            for port in port_list:
+                yield str(port)
+        except Exception as e:
+            logging.error("获取接入的所有串口设备出错！\n错误信息："+str(e))
 
 
 
@@ -434,7 +452,7 @@ class MainWin(QMainWindow,Ui_FastbootFlashMainWin):
 
 
 
- 
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     mainWin = MainWin()

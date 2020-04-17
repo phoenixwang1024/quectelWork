@@ -98,8 +98,8 @@ class Ui_FastbootFlashMainWin(object):
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_3.setGeometry(QtCore.QRect(275, 10, 50, 23))
         self.pushButton_3.setObjectName("pushButton_3")
+        # 点击button打开串口
         self.pushButton_3.clicked.connect(self.pushBtn_Open) # test of get value of comboBox
-
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
         self.label_3.setGeometry(QtCore.QRect(11, 11, 36, 16))
         self.label_3.setObjectName("label_3")
@@ -225,19 +225,22 @@ class Ui_FastbootFlashMainWin(object):
         self.checkBox_13.setText(_translate("FastbootFlashMainWin", "全选"))
         self.pushButton_3.setText(_translate("FastbootFlashMainWin", "打开"))
 
-
     def fileOpenFun1(self):
         self.versionDir1 = QFileDialog.getExistingDirectory(self,"选取文件夹",)#起始路径
-        self.lineEdit.setText(self.versionDir1)
-
-
-        # print(self.versionDir1,type(self.versionDir1))
+        filePath1 = self.versionDir1 + r'\update\partition_nand.xml'
+        if not os.path.exists(filePath1):
+           self.printf('未找到partition.xml文件，请检查！\n')
+        else:
+            self.lineEdit.setText(self.versionDir1)
 
     def fileOpenFun2(self):
         self.versionDir2 = QFileDialog.getExistingDirectory(self, "选取文件夹2", )  # 起始路径
-        self.lineEdit_2.setText(self.versionDir2)
-
-        # print(self.versionDir2, type(self.versionDir2))
+        # self.lineEdit_2.setText(self.versionDir2)
+        filePath2 = self.versionDir2 + r'\update\partition_nand.xml'
+        if not os.path.exists(filePath2):
+           self.printf('未找到partition.xml文件，请检查！\n')
+        else:
+            self.lineEdit_2.setText(self.versionDir2)
 
     def spinBoxValueChange(self):
         self.updateCount = int(self.spinBox.value())
@@ -246,71 +249,16 @@ class Ui_FastbootFlashMainWin(object):
         # 自定义类print函数, 借用c语言
         # printf
         # Mypstr：是待显示的字符串
-        self.textBrowser.append(mypstr)  # 在指定的区域显示提示信息
+        strToPrint = time.strftime("[%Y-%m-%d %H:%M:%S]:", time.localtime()) + mypstr
+        self.textBrowser.append(strToPrint)  # 在指定的区域显示提示信息
         self.cursor = self.textBrowser.textCursor()
         self.textBrowser.moveCursor(self.cursor.End)  # 光标移到最后，这样就会自动显示出来
         QtWidgets.QApplication.processEvents()  # 一定加上这个功能，不然有卡顿
 
-    def main():
-        rt = ComThread()
-        rt.sendport = '**1*80*'
-        try:
-            if rt.start():
-                print(rt.l_serial.name)
-                rt.waiting()
-                print("The data is: %s, The Id is：%s" % (rt.data, rt.ID))
-                rt.stop()
-            else:
-                pass
-        except Exception as se:
-            pritn(str(se))
-
-            if rt.alive:
-                rt.stop()
-        print('')
-        print('End OK.')
-        trmp_ID = rt.ID
-        tem_data = rt.data
-        del rt
-        return temp_ID, temp_data
-
-    def functionStart(self):
-
-
-        # self.SPN = 'com'+ self.comboBox.value
-        self.baudRate = 115200
-
-        # self.makeBat(self, self.versionDir1)
-        # self.makeBat(self, self.versionDir2)
-        # self.printf("[input:%Y-%m-%d %H:%M:%S]:Worked Finished!\r\n")
-        # self.printf('[input:%Y-%m-%d %H:%M:%S]:')
-        self.pushButton_5.setText("升级完成！")
-        #  获取xml文件路劲和要生成的bat文件名称
-        # def getPath(self ):
-        #     global batName
-        #     global filePath
-        #     global dirPath
-        #     global execBatFlag
-        #     while True:
-        #         dirPath = input('输入版本包路径，或者把包文件夹拖到此处：>>> ')
-        #         filePath = dirPath + r'\update\partition_nand.xml'
-        #         updateDir =  dirPath + r'\update'
-        #         if os.path.isdir(updateDir):
-        #             if not os.path.exists(filePath):
-        #                 print('未找到partition.xml文件，请确保路径是否正确并重试！\n')
-        #             else:
-        #                 break
-        #         else:
-        #             print('请确保输入路径为文件夹，而不是文件！')
-        #
-        #     # batNameInput = input('输bat名称,不带.bat后缀,缺省将以版本名称命名:>>> ')
-        #     # if batNameInput == '':
-        #     version = os.path.split(dirPath)[1]
-        #     batName = version + '_flash.bat'
-        #     # else:
-        #     #     batName = batNameInput + '.bat'
-
-    def makeBat(self, filePath, batName):
+    def makeBat(self, dirPath):
+        version = os.path.split(dirPath)[1]
+        batName = version + '_flash.bat'
+        filePath = dirPath + r'\update\partition_nand.xml'
         fbat = open('./' + batName, 'w+')
 
         fbat.write('set path=' + dirPath + '/update\r\n')
@@ -331,10 +279,35 @@ class Ui_FastbootFlashMainWin(object):
                                 fbat.seek(0, 2)
                                 strToWrite = 'fastboot flash ' + a1 + ' %path%/' + a2 + '\r\n'
                                 fbat.write(strToWrite)
+                                # if self.fbUpdateFlag == 1:
+                                #     fcommand = 'fastboot flash' + a1 + self.versionDir1 + '\update' + a2
+                                #     p1 = subprocess.Popen(fcommand)
+                                #     mpstr=p1.returncode
+                                #     self.printf(mpstr)
 
         fbat.write('\r\nfastboot reboot\r\npause')
         fbat.close()
-        print(' bat文件生成成功，文件路径: ', os.path.abspath(batName))
+        batNameAbsPath = os.path.abspath(batName)
+        mypstr = ' bat文件生成成功，文件路径: ' + batNameAbsPath
+        self.printf(mypstr)
+        return batNameAbsPath
+
+    def updateStart(self,batNameToExc):
+        batName = batNameToExc
+        if self.checkBox.isChecked():
+            self.printf('自动升级')
+            self.printf('update start:')
+            self.excuteCommand('at+qadbkey="m1mBBzfiF8sCd8e"')
+            self.excuteCommand('AT+QCFG="USBCFG",0x2C7C,0x0125,1,1,1,1,1,1,0')
+            self.excuteCommand('at+cfun=1,1')
+            time.sleep(8)
+            self.excuteCommand("AT+QFASTBOOT")
+            p1 = subprocess.Popen(batName, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=1)
+            out,err = p1.communicate()
+            print("std_out:" + out)
+            print("std_err:" + err)
+            print('returncode' + str(p1.returncode))
+
 
     def fastbootFlashUpdate(self, countTarget=10, autoUpdateFlag=1):
         count = 0
@@ -397,31 +370,72 @@ class Ui_FastbootFlashMainWin(object):
             return debug_key
 
     def pushBtn_Open(self):
+        self.portStatus = self.pushButton_3.text()
+        # print('portStatus: ',self.portStatus)
         comboBobContent = self.comboBox.currentText()
         comRegex = re.compile('(.*?) -.*')
-        comName = re.findall(comRegex,comboBobContent)[0]
-        self.serialOpen(comName)
+        self.comName = re.findall(comRegex, comboBobContent)[0]
+        if self.portStatus == "打开":
+            try:
+                self.ser = serial.Serial(self.comName, 115200, bytesize=8, parity='N', timeout=1, xonxoff=False,
+                                         rtscts=False, write_timeout=None, dsrdtr=False, inter_byte_timeout=None)
+                self.comboBox.setEnabled(False)
+                if self.ser.isOpen():
+                    self.pushButton_3.setText("关闭")
+                    mypstr = self.comName + '打开成功。'
+                    self.printf(mypstr)
+                else:
+                    pass
+            except:
+                self.printf('串口被占用，请检查后重新打开。')
+
+        if self.portStatus == '关闭':
+            try:
+                self.ser.close()
+                self.comboBox.setEnabled(True)
+                self.pushButton_3.setText("打开")
+                myStrToPrint = self.comName + '关闭成功。'
+                self.printf(myStrToPrint)
+            except serial.serialutil.SerialException as e:
+                myStrToPrint = time.strftime("[app:%Y-%m-%d %H:%M:%S]:",
+                                             time.localtime()) + self.comName + '打开失败，失败原因：' + str(e)
+                self.printf(myStrToPrint)
+
 
     def excuteCommand(self, command, adbFlag=1, adbkeyFlag=0):
         global adbKey
+        serPort = self.ser
         atCommand = command.encode('utf-8')
         serPort.write(atCommand)
-        #  串口执行AT指令，funcFlag默认1，会返回上报信息
-        if adbFlag == 1:
-            commandStr = time.strftime("[input:%Y-%m-%d %H:%M:%S]:", time.localtime()) + command.replace('\r\n', '')
-            self.printf(commandStr)
-            serOut = serPort.read(size=1024)
-            string_AT_R = serOut.decode(encoding="utf-8", errors="strict")
-            string_AT_R_array = string_AT_R.split('\r\n')
-            for i in string_AT_R_array:
-                serReadstr = time.strftime("[response:%Y-%m-%d %H:%M:%S]:", time.localtime()) + i + "\r\n"
-                self.printf(serReadstr)
-                if adbkeyFlag:
-                    adbKeyRegex = re.compile('\+QADBKEY: ([\d]*)')
-                    adbKeyResult = re.findall(adbKeyRegex, i)
-                    if adbKeyResult:
-                        adbKey = adbKeyResult[0]
-                        return adbKey
+        #  串口执行AT指令后打印出来
+        commandStr = '[I]'+ command.replace('\r\n', '')
+        self.printf(commandStr)
+        serOut = serPort.read(size=1024)
+        string_AT_R = serOut.decode(encoding="utf-8", errors="strict")
+        string_AT_R_array = string_AT_R.split('\r\n')
+        for i in string_AT_R_array:
+            serReadstr = '[O]'+ i + "\r\n"
+            self.printf(serReadstr)
+            # 根据adbKeyFlag来判断是否查询adb密码
+            if adbkeyFlag:
+                adbKeyRegex = re.compile('\+QADBKEY: ([\d]*)')
+                adbKeyResult = re.findall(adbKeyRegex, i)
+                if adbKeyResult:
+                    self.adbKey = adbKeyResult[0]
+                    self.printf(self.adbKey)
+                    return self.adbKey
+
+
+
+
+    def functionStart(self):
+        batNameToExc1 = self.makeBat(self.versionDir1)
+        batNameToExc2 = self.makeBat(self.versionDir2)
+        self.updateStart(batNameToExc1)
+        self.updateStart(batNameToExc2)
+        self.pushButton_5.setText("重新开始")
+
+
 
 
 class CustomComboBox(QComboBox):
@@ -453,114 +467,11 @@ class CustomComboBox(QComboBox):
                 yield str(port)
         except Exception as e:
             logging.error("获取接入的所有串口设备出错！\n错误信息："+str(e))
-class ComThread:
-    def __init__(self,Port='COM11'):
-        self.l_serial = None
-        self.alive = False
-        self.waitEnd = None
-        self.Port = Port
-        self.ID = None
-        self.data = None
-
-    def waiting(self):
-        if not self.waitEnd is None:
-            self.waitEnd.wait()
-
-    def SetStopEvent(self):
-        if not self.waitEnd is None:
-            self.waitEnd.set()
-        self.alive = False
-        self.stop()
-
-    def start(self):
-        self.l_serial = serial.Serial()
-        self.l_serial.port = self.port
-        self.l_serial.baudrate = 115200
-        # 设置等待时间，若超出这停止等待
-        self.l_serial.timeout = 2
-        self.l_serial.open()
-        # 判断串口是否已经打开
-        if self.l_serial.isOpen():
-            self.waitEnd = threading.Event()
-            self.alive = True
-            self.thread_read = None
-            self.thread_read = threading.Thread(target=self.FirstReader)
-            self.thread_read.setDaemon(1)
-            self.thread_read.start()
-            return True
-        else:
-            return False
-
-    def SendDate(self, send):
-        lmsg = ''
-        isOK = False
-        if isinstance(i_msg):
-            lmsg = i_msg.encode('gb18030')
-        else:
-            lmsg = i_msg
-        try:
-            # 发送数据到相应的处理组件
-            self.l_serial.write(send)
-        except Exception as ex:
-            pass;
-        return isOK
-
-    def FirstReader(self):
-        while self.alive:
-            time.sleep(0.1)
-
-            data = ''
-            data = data.encode('utf-8')
-
-            n = self.l_serial.inWaiting()
-            if n:
-                data = data + self.l_serial.read(n)
-                print('get data from serial port', data)
-                print(type(data))
-
-                n = self.l_serial.inWaiting()
-                if len(data) > 0 and n ==0:
-                    try:
-                        temp = data.decode('gb10830')
-                        print(type(temp))
-                        print(temp)
-                        car, temp = str(temp).split("\n",1)
-                        print(car, temp)
-
-                        string = str(temp).strip().split(":")[1]
-                        str_ID, str_data = str(string).split("*",1)
-
-                        print(str_ID)
-                        print(str_data)
-                        print(type(str_ID), type(str_data))
-
-                        if str_data[-1] == '*':
-                            break
-                        else:
-                            print(str_data[-1])
-                            print('str_data[-1]!=*')
-                    except:
-                        print("读卡错误，请重试！\n")
-        self.ID = str_ID
-        self.data = str_data[0:-1]
-        self.waitEnd.set()
-        self.alive = False
-
-    def stop(self):
-        self.alive = False
-        self.thread_read.join()
-        if self.l_serial.isOpen():
-            self.l_serial.close()
-
-
 
 class MainWin(QMainWindow,Ui_FastbootFlashMainWin):
     def __init__(self, parent = None):
         super(MainWin, self).__init__(parent)
         self.setupUi(self)
-
-
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

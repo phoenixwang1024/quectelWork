@@ -169,7 +169,6 @@ class paserKeyClass():
         self.opener.open(req)
         self.opener.close()
 
-
 if __name__ =="__main__":
     app = QApplication(sys.argv)
     demo = QcPwdClass()

@@ -36,6 +36,7 @@ class Update(object):
 
     def makeBat(filePath,batName):
         fbat = open('./'+batName,'w+')
+        self.updateItem = []
 
         fbat.write('set path=' + updateDir +'\r\n')
         tree = ET.parse(filePath)
@@ -53,6 +54,8 @@ class Update(object):
                                 continue
                             else:
                                 fbat.seek(0, 2)
+                                self.updateItem.append(a1)
+                                print(self.updateItem)
                                 strToWrite = 'fastboot flash ' + a1+ ' %path%\\' + a2 + '\r\n'
                                 fbat.write(strToWrite)
 

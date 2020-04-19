@@ -18,8 +18,6 @@ from urllib import request
 from PyQt5.QtWidgets import *
 import pyperclip
 
-
-
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -40,24 +38,23 @@ class Ui_MainWindow(object):
         self.radioButton_adb = QtWidgets.QRadioButton(self.centralwidget)
         self.radioButton_adb.setChecked(False)
         self.radioButton_adb.setObjectName("radioButton_adb")
-
         self.gridLayout.addWidget(self.radioButton_adb, 2, 0, 1, 1)
         self.radioButton_Console = QtWidgets.QRadioButton(self.centralwidget)
         self.radioButton_Console.setChecked(True)
         self.radioButton_Console.setObjectName("radioButton_Console")
-        self.radioButton_Console.toggled.connect(lambda: self.btnstate(self.radioButton_Console))
+
         self.gridLayout.addWidget(self.radioButton_Console, 2, 1, 1, 1)
         self.pushButton_QueryWithCom = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_QueryWithCom.setMaximumSize(QtCore.QSize(100, 16777215))
         self.pushButton_QueryWithCom.setObjectName("pushButton_QueryWithCom")
-        self.pushButton_QueryWithCom.clicked.connect(self.queryWithCom)
+
         self.gridLayout.addWidget(self.pushButton_QueryWithCom, 0, 2, 1, 1)
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setObjectName("label_2")
         self.gridLayout.addWidget(self.label_2, 1, 0, 1, 1)
         self.pushButton_QueryWithID = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_QueryWithID.setObjectName("pushButton_QueryWithID")
-        self.pushButton_QueryWithID.clicked.connect(self.queryWithID)
+
         self.gridLayout.addWidget(self.pushButton_QueryWithID, 1, 2, 1, 1)
         self.comboBox_comList = ComListComboBox(self.centralwidget)
         self.comboBox_comList.setEditable(True)
@@ -67,7 +64,7 @@ class Ui_MainWindow(object):
         self.pushButton_Copy = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_Copy.setObjectName("pushButton_Copy")
         self.gridLayout.addWidget(self.pushButton_Copy, 2, 2, 1, 1)
-        self.pushButton_Copy.clicked.connect(self.copy)
+
         self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 2)
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
         self.label_3.setMaximumSize(QtCore.QSize(150, 16777215))
@@ -214,6 +211,11 @@ class MainWin(QMainWindow,Ui_MainWindow):
 
         self.qtype = 'console'
         self.setupUi(self)
+        self.radioButton_Console.toggled.connect(lambda: self.btnstate(self.radioButton_Console))
+        self.pushButton_QueryWithCom.clicked.connect(self.queryWithCom)
+        self.pushButton_QueryWithID.clicked.connect(self.queryWithID)
+        self.pushButton_Copy.clicked.connect(self.copy)
+
 
     def printf(self, mypstr):
         # 自定义类print函数, 借用c语言
@@ -274,7 +276,6 @@ class MainWin(QMainWindow,Ui_MainWindow):
             self.comboBox_comList.setEnabled(True)
             self.textBrowser.setText("请检查输入内容是否满足8位数ID")
 
-
     def queryWithCom(self):
         self.lineEdit_QuectelID.setText('')
         self.textBrowser.setText('')
@@ -302,12 +303,40 @@ class MainWin(QMainWindow,Ui_MainWindow):
         # print(str(self.textBrowser.toPlainText()))
         self.textToCopy = pyperclip.copy(str(self.textBrowser.toPlainText()))
 
-    def checkSize(self):
-        command = ""
-        pass
+    def debugLogIn(self):
+        while 1:
+            self.sendData('root')
+            data = self.ser.read(1024)
+            data_decode = data.decode(encoding="utf-8", errors="strict")
+            # data_result = data_decode.split('\r\n')
+            print(data_result)
+            if re.match('.*mdm9607-perf login:.*',data_result):
+                # if at_man == "mdm9607-perf login:":
+                self.sendData('root')
+                dataRes1 = self.ser.read(1024)
+                data1_decode = dataRes1.decode(encoding="utf-8", errors="strict")
+                if re.match('.*Password:.*'):
+                    self.sendData(self.lineEdit_QuectelID.text())
+                    break
+
+                    adbKeyRegex1 = re.compile('Password:')
+                    adbKeyRegex2 = re.compile(' quectel-ID : ([\d]{8})')
+                    adbKeyResult1 = re.findall(adbKeyRegex1, at_man)
+                    adbKeyResult2 = re.findall(adbKeyRegex2, at_man)
+                    if adbKeyResult1:
+                        self.QuectelId = adbKeyResult1[0]
+                        self.lineEdit_QuectelID.setText(self.QuectelId)
+                        self.queryWithID()
+                        break
+
+
 
     # 接收数据
     def data_receive(self):
+
+
+    def getKey(self):
+
         try:
             num = self.ser.inWaiting()
             if num>0:
@@ -410,6 +439,15 @@ class MainWin(QMainWindow,Ui_MainWindow):
             self.qtype = 'adb'
         if btn.text() == "console" and btn.isChecked() == True:
             self.qtype = 'console'
+
+    def sendData(self,dataToSend):
+        try:
+            command = dataToSend + '\r\n'
+            serPort = self.ser
+            atCommand = command.encode("UTF-8")
+            serPort.write(atCommand)
+        except:
+            pass
 
 if __name__ =="__main__":
     app = QApplication(sys.argv)

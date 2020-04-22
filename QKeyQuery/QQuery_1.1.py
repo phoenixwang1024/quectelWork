@@ -216,7 +216,6 @@ class MainWin(QMainWindow,Ui_MainWindow):
         self.pushButton_QueryWithID.clicked.connect(self.queryWithID)
         self.pushButton_Copy.clicked.connect(self.copy)
 
-
     def printf(self, mypstr):
         # 自定义类print函数, 借用c语言
         # printf
@@ -230,22 +229,22 @@ class MainWin(QMainWindow,Ui_MainWindow):
     def queryWithID(self):
         self.comboBox_comList.setEnabled(False)
         self.queryId = self.lineEdit_QuectelID.text()
-        key = ''
+        self.key = ''
         if self.queryId.strip() != '' and re.match(r'\d{8}', self.queryId):
            # 先去遍历历史生成的秘钥
             self.textBrowser.setText("正在帮您查询历史秘钥！请稍等...")
             try:
-                key = paserKeyClass().getPaserKey(self.queryId, self.qtype)
+                self.key = paserKeyClass().getPaserKey(self.queryId, self.qtype)
                 # 找不到，再去重新生成
-                if key == '':
+                if self.key == '':
                     self.textBrowser.setText("没有找到历史秘钥！正在帮您重新生成！请稍等...请不要关闭窗口！！！！！")
                     paserKeyClass().createPwd(self.queryId, self.qtype)
                     time.sleep(1)
-                    key = paserKeyClass().getPaserKey(self.queryId, self.qtype)
-                if key == '':
+                    self.key = paserKeyClass().getPaserKey(self.queryId, self.qtype)
+                if self.key == '':
                     time.sleep(2)
-                    key = paserKeyClass().getPaserKey(self.queryId, self.qtype)
-                    if key == '':
+                    self.key = paserKeyClass().getPaserKey(self.queryId, self.qtype)
+                    if self.key == '':
                         self.textBrowser.setText("暂时未查到密钥！后续优化获取的方法！")
                     else:
                         pass
@@ -267,7 +266,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
                                     # print(self.RIStatus)
                             if re.search(".*\:/#", at_result):
                                 break
-                    self.printf(key)
+                    self.printf(self.key)
                     self.port_close()
             except:
                 self.port_close()
@@ -275,6 +274,9 @@ class MainWin(QMainWindow,Ui_MainWindow):
         else:
             self.comboBox_comList.setEnabled(True)
             self.textBrowser.setText("请检查输入内容是否满足8位数ID")
+
+    def openPort(self):
+        pass
 
     def queryWithCom(self):
         self.lineEdit_QuectelID.setText('')
@@ -289,37 +291,69 @@ class MainWin(QMainWindow,Ui_MainWindow):
                                      rtscts=False, write_timeout=None, dsrdtr=False, inter_byte_timeout=None)
             self.timer.start(2)
             if self.ser.isOpen():
-                self.printf(self.comName + '打开成功')
-                # self.pushButton_QueryWithCom.setText("查询中")
-                command = "AT+QADBKEY?"+'\r\n'
-                atCommand = command.encode('utf-8')
-                self.ser.write(atCommand)
+                if not self.checkBox.isChecked():
+                    self.printf(self.comName + '打开成功')
+                    # self.pushButton_QueryWithCom.setText("查询中")
+                    command = "AT+QADBKEY?"+'\r\n'
+                    atCommand = command.encode('utf-8')
+                    self.ser.write(atCommand)
+                else:
+                    self.queryWithID()
         except:
             self.textBrowser.setText("端口被占用，请检查后重试")
             self.port_close()
             pass
+        while self.checkBox.isChecked():
+            if self.key:
+                self.debugLogIn()
 
     def copy(self):
         # print(str(self.textBrowser.toPlainText()))
         self.textToCopy = pyperclip.copy(str(self.textBrowser.toPlainText()))
 
     def debugLogIn(self):
+        self.sendData('root')
         while 1:
-            self.sendData('root')
             data = self.ser.read(1024)
             data_decode = data.decode(encoding="utf-8", errors="strict")
             # data_result = data_decode.split('\r\n')
             print(data_result)
-            if re.match('.*mdm9607-perf login:.*',data_result):
+            if re.search('Password: ',data_decode):
+                self.sendData(self.key)
+                while 1:
+                    dataRes2 = self.ser.read(1024)
+                    dataRes2_decode =  dataRes2.decode(encoding="utf-8",errors="strict")
+                    if re.search('root@mdm9607-perf:~# ', dataRes2_decode):
+                        self.sendData('cd /&& du -d1')
+                        print('login and check size:')
+                        break
+            elif re.search('.*mdm9607-perf login:.*', data_result):
                 # if at_man == "mdm9607-perf login:":
                 self.sendData('root')
                 dataRes1 = self.ser.read(1024)
                 data1_decode = dataRes1.decode(encoding="utf-8", errors="strict")
-                if re.match('.*Password:.*'):
+                if re.search('.*Password:.*'):
                     self.sendData(self.lineEdit_QuectelID.text())
                     break
 
-                    adbKeyRegex1 = re.compile('Password:')
+
+    # 接收数据
+    def data_receive(self):
+        try:
+            num = self.ser.inWaiting()
+            if num > 0:
+                self.comboBox_comList.setEnabled(False)
+        except:
+            self.port_close()
+            return None
+        if num > 0:
+            data = self.ser.read(1024)
+            num = len(data)
+            UART_data_result = data.decode(encoding="utf-8", errors="strict")
+            at_result = UART_data_result.split('\r\n')
+            for at_man in at_result:
+                if at_man:
+                    adbKeyRegex1 = re.compile('\+QADBKEY: ([\d]{8})')
                     adbKeyRegex2 = re.compile(' quectel-ID : ([\d]{8})')
                     adbKeyResult1 = re.findall(adbKeyRegex1, at_man)
                     adbKeyResult2 = re.findall(adbKeyRegex2, at_man)
@@ -328,12 +362,50 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         self.lineEdit_QuectelID.setText(self.QuectelId)
                         self.queryWithID()
                         break
+                    elif adbKeyResult2:
+                        self.QuectelId = adbKeyResult2[0]
+                        self.lineEdit_QuectelID.setText(self.QuectelId)
+                        self.queryWithID()
+                        break
+                    else:
+                        if self.ser.isOpen():
+                            # self.pushButton_QueryWithCom.setText("查询中")
+                            command = "root" + '\r\n'
+                            atCommand = command.encode('utf-8')
+                            self.ser.write(atCommand)
+                            time.sleep(3)
+                            data = self.ser.read(1024)
+                            num = len(data)
+                            UART_data_result = data.decode(encoding="utf-8", errors="strict")
+                            at_result = UART_data_result.split('\r\n')
+                            for at_man in at_result:
+                                if at_man:
+                                    adbKeyRegex1 = re.compile('\+QADBKEY: ([\d]{8})')
+                                    adbKeyRegex2 = re.compile(' quectel-ID : ([\d]{8})')
+                                    adbKeyResult1 = re.findall(adbKeyRegex1, at_man)
+                                    adbKeyResult2 = re.findall(adbKeyRegex2, at_man)
+                                    if adbKeyResult1:
+                                        self.QuectelId = adbKeyResult1[0]
+                                        self.lineEdit_QuectelID.setText(self.QuectelId)
+                                        self.queryWithID()
+                                        break
+                                    elif adbKeyResult2:
+                                        self.QuectelId = adbKeyResult2[0]
+                                        self.lineEdit_QuectelID.setText(self.QuectelId)
+                                        self.queryWithID()
+                                        break
 
+            # 串口接收到的字符串为b'123',要转化成unicode字符串才能输出到窗口中去
+            # self.textBrowser.insertPlainText(data.decode('iso-8859-1'))
 
-
-    # 接收数据
-    def data_receive(self):
-
+            # 获取到text光标
+            textCursor = self.textBrowser.textCursor()
+            # 滚动到底部
+            textCursor.movePosition(textCursor.End)
+            # 设置光标到text中去
+            self.textBrowser.setTextCursor(textCursor)
+        else:
+            pass
 
     def getKey(self):
 

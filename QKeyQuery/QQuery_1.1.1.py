@@ -6,19 +6,15 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import pyqtSignal
-import sys,os,serial,logging
-import serial.tools.list_ports
-import sys,re,time, threading
+from PyQt5.QtCore import pyqtSignal,QTimer
+import serial.tools.list_ports,logging
+import sys,re,time
 import urllib.request
 import http.cookiejar
 from urllib import request
 from PyQt5.QtWidgets import *
 import pyperclip
-
-
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -40,24 +36,20 @@ class Ui_MainWindow(object):
         self.radioButton_adb = QtWidgets.QRadioButton(self.centralwidget)
         self.radioButton_adb.setChecked(False)
         self.radioButton_adb.setObjectName("radioButton_adb")
-
         self.gridLayout.addWidget(self.radioButton_adb, 2, 0, 1, 1)
         self.radioButton_Console = QtWidgets.QRadioButton(self.centralwidget)
         self.radioButton_Console.setChecked(True)
         self.radioButton_Console.setObjectName("radioButton_Console")
-        self.radioButton_Console.toggled.connect(lambda: self.btnstate(self.radioButton_Console))
         self.gridLayout.addWidget(self.radioButton_Console, 2, 1, 1, 1)
         self.pushButton_QueryWithCom = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_QueryWithCom.setMaximumSize(QtCore.QSize(100, 16777215))
         self.pushButton_QueryWithCom.setObjectName("pushButton_QueryWithCom")
-        self.pushButton_QueryWithCom.clicked.connect(self.queryWithCom)
         self.gridLayout.addWidget(self.pushButton_QueryWithCom, 0, 2, 1, 1)
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setObjectName("label_2")
         self.gridLayout.addWidget(self.label_2, 1, 0, 1, 1)
         self.pushButton_QueryWithID = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_QueryWithID.setObjectName("pushButton_QueryWithID")
-        self.pushButton_QueryWithID.clicked.connect(self.queryWithIDBtnEvent)
         self.gridLayout.addWidget(self.pushButton_QueryWithID, 1, 2, 1, 1)
         self.comboBox_comList = ComListComboBox(self.centralwidget)
         self.comboBox_comList.setEditable(True)
@@ -67,7 +59,6 @@ class Ui_MainWindow(object):
         self.pushButton_Copy = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_Copy.setObjectName("pushButton_Copy")
         self.gridLayout.addWidget(self.pushButton_Copy, 2, 2, 1, 1)
-        self.pushButton_Copy.clicked.connect(self.copy)
         self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 2)
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
         self.label_3.setMaximumSize(QtCore.QSize(150, 16777215))
@@ -202,18 +193,38 @@ class ComListComboBox(QComboBox):
         except Exception as e:
             logging.error("获取接入的所有串口设备出错！\n错误信息：" + str(e))
 
-from PyQt5.QtCore import QTimer
+# class debugCOM():
+#     def logIn(self，key):
+#         pass
+#
+#
+#     def querySize(self):
+#         pass
+
+import  threading
 
 class MainWin(QMainWindow,Ui_MainWindow):
     def __init__(self, parent = None):
         super(MainWin, self).__init__(parent)
+        # 默认查询console密码
+        self.qtype = 'console'
+        self.setupUi(self)
 
         # 定时器接收数据
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.data_receive)
 
-        self.qtype = 'console'
-        self.setupUi(self)
+        # 选择console类型密码
+        self.radioButton_Console.toggled.connect(lambda: self.btnstate(self.radioButton_Console))
+
+        # 点击串口查询
+        self.pushButton_QueryWithCom.clicked.connect(self.queryWithCom)
+
+        # 点击ID查询
+        self.pushButton_QueryWithID.clicked.connect(self.queryWithIDBtnEvent)
+
+        # 点击复制
+        self.pushButton_Copy.clicked.connect(self.copy)
 
     def printf(self, mypstr):
         # 自定义类print函数, 借用c语言
@@ -228,6 +239,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
     def queryWithIDBtnEvent(self):
         idBtn = threading.Thread(target=self.queryWithID(), name='queryWithID')
         idBtn.start()
+
 
     def queryWithID(self):
         self.comboBox_comList.setEnabled(False)
@@ -282,15 +294,14 @@ class MainWin(QMainWindow,Ui_MainWindow):
         self.lineEdit_QuectelID.setText('')
         self.textBrowser.setText('')
         self.portStatus = self.pushButton_QueryWithCom.text()
-        # print('portStatus: ',self.portStatus)
         comboBobContent = self.comboBox_comList.currentText()
-        comRegex = re.compile('(COM\d*).*')
+        comRegex = re.compile('(COM\d*).*')    # 获取要打开的串口号
         self.comName = re.findall(comRegex, comboBobContent)[0]
         try:
             self.ser = serial.Serial(self.comName, 115200, bytesize=8, parity='N', timeout=0.8, xonxoff=False,
                                      rtscts=False, write_timeout=None, dsrdtr=False, inter_byte_timeout=None)
+            self.timer.start(2)    #打开串口后监控串口输出信息
             if self.ser.isOpen():
-                self.timer.start(2)
                 self.printf(self.comName + '打开成功')
                 # self.pushButton_QueryWithCom.setText("查询中")
                 command = "AT+QADBKEY?"+'\r\n'
@@ -325,6 +336,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
             at_result = UART_data_result.split('\r\n')
             for at_man in at_result:
                 if at_man:
+                    self.printf(at_man)
                     adbKeyRegex1 = re.compile('\+QADBKEY: ([\d]{8})')
                     adbKeyRegex2 = re.compile(' quectel-ID : ([\d]{8})')
                     adbKeyResult1 = re.findall(adbKeyRegex1, at_man)
@@ -339,7 +351,13 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         self.QuectelId = adbKeyResult2[0]
                         self.lineEdit_QuectelID.setText(self.QuectelId)
                         self.queryWithID()
+                        if self.checkBox.isChecked():
+                            if re.search('')
                         break
+
+
+
+
                     else:
                         if self.ser.isOpen():
                             # self.pushButton_QueryWithCom.setText("查询中")
@@ -369,9 +387,6 @@ class MainWin(QMainWindow,Ui_MainWindow):
                                         break
 
 
-            # 串口接收到的字符串为b'123',要转化成unicode字符串才能输出到窗口中去
-            # self.textBrowser.insertPlainText(data.decode('iso-8859-1'))
-
             # 获取到text光标
             textCursor = self.textBrowser.textCursor()
             # 滚动到底部
@@ -390,12 +405,6 @@ class MainWin(QMainWindow,Ui_MainWindow):
         self.pushButton_QueryWithCom.setEnabled(True)
         self.pushButton_QueryWithID.setEnabled(True)
         self.comboBox_comList.setEnabled(True)
-        # 接收数据和发送数据数目置零
-        # self.data_num_received = 0
-        # self.lineEdit.setText(str(self.data_num_received))
-        # self.data_num_sended = 0
-        # self.lineEdit_2.setText(str(self.data_num_sended))
-        # self.formGroupBox1.setTitle("串口状态（已关闭）")
 
     def putPlainText(self,text):
         self.text.setPlainText(text)
@@ -407,7 +416,6 @@ class MainWin(QMainWindow,Ui_MainWindow):
                 self.button.setText("点击查询")
                 self.button.setDisabled(False)
                 self.getStatus = 0
-        QApplication.processEvents();
 
     def btnstate(self, btn):
         if btn.text() == 'adb' and btn.isChecked() == True:

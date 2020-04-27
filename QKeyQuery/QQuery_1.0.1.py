@@ -6,15 +6,19 @@
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import pyqtSignal,QTimer
-import serial.tools.list_ports,logging
-import sys,re,time
+from PyQt5.QtCore import pyqtSignal
+import sys,os,serial,logging
+import serial.tools.list_ports
+import sys,re,time, threading
 import urllib.request
 import http.cookiejar
 from urllib import request
 from PyQt5.QtWidgets import *
 import pyperclip
+
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -36,6 +40,7 @@ class Ui_MainWindow(object):
         self.radioButton_adb = QtWidgets.QRadioButton(self.centralwidget)
         self.radioButton_adb.setChecked(False)
         self.radioButton_adb.setObjectName("radioButton_adb")
+
         self.gridLayout.addWidget(self.radioButton_adb, 2, 0, 1, 1)
         self.radioButton_Console = QtWidgets.QRadioButton(self.centralwidget)
         self.radioButton_Console.setChecked(True)
@@ -56,21 +61,19 @@ class Ui_MainWindow(object):
         self.comboBox_comList.setMaximumSize(QtCore.QSize(500, 16777215))
         self.comboBox_comList.setObjectName("comboBox_comList")
         self.gridLayout.addWidget(self.comboBox_comList, 0, 1, 1, 1)
-        # 查询压力空间
-        self.pushButton_debugCheck = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_debugCheck.setObjectName("debugCheck")
-        self.gridLayout.addWidget(self.pushButton_debugCheck, 2, 1, 1,2)
         self.pushButton_Copy = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_Copy.setObjectName("pushButton_Copy")
         self.gridLayout.addWidget(self.pushButton_Copy, 2, 2, 1, 1)
+        self.pushButton_Copy.clicked.connect(self.copy)
         self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 2)
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
         self.label_3.setMaximumSize(QtCore.QSize(150, 16777215))
         self.label_3.setObjectName("label_3")
         self.gridLayout_2.addWidget(self.label_3, 1, 0, 1, 1)
-        # self.checkBox = QtWidgets.QCheckBox(self.centralwidget)
-        # self.checkBox.setObjectName("checkBox")
-        #self.gridLayout_2.addWidget(self.checkBox, 1, 1, 1, 1)
+        self.checkBox = QtWidgets.QCheckBox(self.centralwidget)
+        self.checkBox.setChecked(False)
+        self.checkBox.setObjectName("checkBox")
+        self.gridLayout_2.addWidget(self.checkBox, 1, 1, 1, 1)
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
         self.textBrowser.setObjectName("textBrowser")
         self.gridLayout_2.addWidget(self.textBrowser, 2, 0, 1, 2)
@@ -96,9 +99,8 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "Quectel ID:"))
         self.pushButton_QueryWithID.setText(_translate("MainWindow", "ID查询"))
         self.pushButton_Copy.setText(_translate("MainWindow", "复制"))
-        self.pushButton_debugCheck.setText(_translate("MainWindow", "空间查询"))
         self.label_3.setText(_translate("MainWindow", "查询空间Port请选择debug口  "))
-        # self.checkBox.setText(_translate("MainWindow", "压力空间查询"))
+        self.checkBox.setText(_translate("MainWindow", "压力空间查询"))
 
 
 
@@ -198,38 +200,35 @@ class ComListComboBox(QComboBox):
         except Exception as e:
             logging.error("获取接入的所有串口设备出错！\n错误信息：" + str(e))
 
-# class debugCOM():
-#     def logIn(self，key):
-#         pass
-#
-#
-#     def querySize(self):
-#         pass
-
-import  threading
+from PyQt5.QtCore import QTimer
 
 class MainWin(QMainWindow,Ui_MainWindow):
     def __init__(self, parent = None):
         super(MainWin, self).__init__(parent)
-        # 默认查询console密码
-        self.qtype = 'console'
-        self.setupUi(self)
 
         # 定时器接收数据
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.data_receive)
+        self.qtype = 'console'
 
-        # 选择console类型密码
-        self.radioButton_Console.toggled.connect(lambda: self.btnstate(self.radioButton_Console))
-
-        # 点击串口查询
+        self.setupUi(self)
+        self.checkBox.toggled.connect(self.checkBoxEvent)
+        self.radioButton_adb.toggled.connect(self.radio_btn_adb_event)
+        self.radioButton_Console.toggled.connect(self.radio_btn_console_event)
         self.pushButton_QueryWithCom.clicked.connect(self.queryWithCom)
-
-        # 点击ID查询
         self.pushButton_QueryWithID.clicked.connect(self.queryWithIDBtnEvent)
 
-        # 点击复制
-        self.pushButton_Copy.clicked.connect(self.copy)
+    def checkBoxEvent(self):
+        if self.checkBox.isChecked():
+            self.textBrowser.clear()
+            self.pushButton_QueryWithID.setEnabled(False)
+            self.radioButton_Console.setChecked(True)
+            self.checkBox.setChecked(True)
+            self.textBrowser.setText('第一步：选择Debug口\n\n第二步：选择串口查询')
+        else:
+            self.textBrowser.clear()
+            self.pushButton_QueryWithID.setEnabled(True)
+
 
     def printf(self, mypstr):
         # 自定义类print函数, 借用c语言
@@ -243,27 +242,27 @@ class MainWin(QMainWindow,Ui_MainWindow):
 
     def queryWithIDBtnEvent(self):
         idBtn = threading.Thread(target=self.queryWithID(), name='queryWithID')
-        idBtn.start()
+        idBtn.join()
 
     def queryWithID(self):
         self.comboBox_comList.setEnabled(False)
         self.queryId = self.lineEdit_QuectelID.text()
-        key = ''
+        self.key = ''
         if self.queryId.strip() != '' and re.match(r'\d{8}', self.queryId):
            # 先去遍历历史生成的秘钥
             self.textBrowser.setText("正在帮您查询历史秘钥！请稍等...")
             try:
-                key = paserKeyClass().getPaserKey(self.queryId, self.qtype)
+                self.key = paserKeyClass().getPaserKey(self.queryId, self.qtype)
                 # 找不到，再去重新生成
-                if key == '':
+                if self.key == '':
                     self.textBrowser.setText("没有找到历史秘钥！正在帮您重新生成！请稍等...请不要关闭窗口！！！！！")
                     paserKeyClass().createPwd(self.queryId, self.qtype)
                     time.sleep(1)
-                    key = paserKeyClass().getPaserKey(self.queryId, self.qtype)
-                if key == '':
+                    self.key = paserKeyClass().getPaserKey(self.queryId, self.qtype)
+                if self.key == '':
                     time.sleep(2)
-                    key = paserKeyClass().getPaserKey(self.queryId, self.qtype)
-                    if key == '':
+                    self.key = paserKeyClass().getPaserKey(self.queryId, self.qtype)
+                    if self.key == '':
                         self.textBrowser.setText("暂时未查到密钥！后续优化获取的方法！")
                     else:
                         pass
@@ -285,7 +284,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
                                     # print(self.RIStatus)
                             if re.search(".*\:/#", at_result):
                                 break
-                    self.printf(key)
+                    self.printf(self.key)
                     self.port_close()
             except:
                 self.port_close()
@@ -298,17 +297,21 @@ class MainWin(QMainWindow,Ui_MainWindow):
         self.lineEdit_QuectelID.setText('')
         self.textBrowser.setText('')
         self.portStatus = self.pushButton_QueryWithCom.text()
+        # print('portStatus: ',self.portStatus)
         comboBobContent = self.comboBox_comList.currentText()
-        comRegex = re.compile('(COM\d*).*')    # 获取要打开的串口号
+        comRegex = re.compile('(COM\d*).*')
         self.comName = re.findall(comRegex, comboBobContent)[0]
         try:
             self.ser = serial.Serial(self.comName, 115200, bytesize=8, parity='N', timeout=0.8, xonxoff=False,
                                      rtscts=False, write_timeout=None, dsrdtr=False, inter_byte_timeout=None)
-            self.timer.start(2)    #打开串口后监控串口输出信息
             if self.ser.isOpen():
+                self.timer.start(2)
                 self.printf(self.comName + '打开成功')
                 # self.pushButton_QueryWithCom.setText("查询中")
-                command = "AT+QADBKEY?"+'\r\n'
+                if self.checkBox.isChecked():
+                    command = "root"+'\r'
+                else:
+                    command = "AT+QADBKEY?"+'\r\n'
                 atCommand = command.encode('utf-8')
                 self.ser.write(atCommand)
         except:
@@ -340,11 +343,24 @@ class MainWin(QMainWindow,Ui_MainWindow):
             at_result = UART_data_result.split('\r\n')
             for at_man in at_result:
                 if at_man:
-                    self.printf(at_man)
                     adbKeyRegex1 = re.compile('\+QADBKEY: ([\d]{8})')
                     adbKeyRegex2 = re.compile(' quectel-ID : ([\d]{8})')
                     adbKeyResult1 = re.findall(adbKeyRegex1, at_man)
                     adbKeyResult2 = re.findall(adbKeyRegex2, at_man)
+
+                    if self.checkBox.isChecked():
+                        if re.search('mdm9607 login:',at_man):
+                            command = 'root\r'
+                            data.decode('utf-8')
+                            self.ser.write(data)
+                        elif re.search('Password:', at_man):
+                            command = self.key + '\r'
+                            data.decode('utf-8')
+                            self.ser.write(data)
+                        elif re.search('~ # '):
+                            command = 'cd /&& du -d1\r'
+                            data=command.decode('utf-8')
+
 
                     if adbKeyResult1:
                         self.QuectelId = adbKeyResult1[0]
@@ -355,13 +371,6 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         self.QuectelId = adbKeyResult2[0]
                         self.lineEdit_QuectelID.setText(self.QuectelId)
                         self.queryWithID()
-                        if self.checkBox.isChecked():
-                            if re.search(''):
-                                pass
-                        break
-
-
-
 
                     else:
                         if self.ser.isOpen():
@@ -375,6 +384,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
                             UART_data_result = data.decode(encoding="utf-8", errors="strict")
                             at_result = UART_data_result.split('\r\n')
                             for at_man in at_result:
+                                self.pritf(at_man)
                                 if at_man:
                                     adbKeyRegex1 = re.compile('\+QADBKEY: ([\d]{8})')
                                     adbKeyRegex2 = re.compile(' quectel-ID : ([\d]{8})')
@@ -391,6 +401,9 @@ class MainWin(QMainWindow,Ui_MainWindow):
                                         self.queryWithID()
                                         break
 
+
+            # 串口接收到的字符串为b'123',要转化成unicode字符串才能输出到窗口中去
+            # self.textBrowser.insertPlainText(data.decode('iso-8859-1'))
 
             # 获取到text光标
             textCursor = self.textBrowser.textCursor()
@@ -410,6 +423,12 @@ class MainWin(QMainWindow,Ui_MainWindow):
         self.pushButton_QueryWithCom.setEnabled(True)
         self.pushButton_QueryWithID.setEnabled(True)
         self.comboBox_comList.setEnabled(True)
+        # 接收数据和发送数据数目置零
+        # self.data_num_received = 0
+        # self.lineEdit.setText(str(self.data_num_received))
+        # self.data_num_sended = 0
+        # self.lineEdit_2.setText(str(self.data_num_sended))
+        # self.formGroupBox1.setTitle("串口状态（已关闭）")
 
     def putPlainText(self,text):
         self.text.setPlainText(text)
@@ -421,12 +440,14 @@ class MainWin(QMainWindow,Ui_MainWindow):
                 self.button.setText("点击查询")
                 self.button.setDisabled(False)
                 self.getStatus = 0
+        QApplication.processEvents();
 
-    def btnstate(self, btn):
-        if btn.text() == 'adb' and btn.isChecked() == True:
-            self.qtype = 'adb'
-        if btn.text() == "console" and btn.isChecked() == True:
+    def radio_btn_console_event(self):
             self.qtype = 'console'
+    def radio_btn_adb_event(self):
+        self.qtype = 'adb'
+        self.checkBox.setChecked(False)
+
 
 if __name__ =="__main__":
     app = QApplication(sys.argv)

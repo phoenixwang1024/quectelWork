@@ -40,7 +40,6 @@ class Ui_MainWindow(object):
         self.radioButton_adb = QtWidgets.QRadioButton(self.centralwidget)
         self.radioButton_adb.setChecked(False)
         self.radioButton_adb.setObjectName("radioButton_adb")
-
         self.gridLayout.addWidget(self.radioButton_adb, 2, 0, 1, 1)
         self.radioButton_Console = QtWidgets.QRadioButton(self.centralwidget)
         self.radioButton_Console.setChecked(True)
@@ -57,7 +56,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.label_2, 1, 0, 1, 1)
         self.pushButton_QueryWithID = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_QueryWithID.setObjectName("pushButton_QueryWithID")
-        self.pushButton_QueryWithID.clicked.connect(self.queryWithIDBtnEvent)
+        self.pushButton_QueryWithID.clicked.connect(self.queryWithCom)
         self.gridLayout.addWidget(self.pushButton_QueryWithID, 1, 2, 1, 1)
         self.comboBox_comList = ComListComboBox(self.centralwidget)
         self.comboBox_comList.setEditable(True)
@@ -225,9 +224,6 @@ class MainWin(QMainWindow,Ui_MainWindow):
         self.textBrowser.moveCursor(self.cursor.End)  # 光标移到最后，这样就会自动显示出来
         QApplication.processEvents()  # 一定加上这个功能，不然有卡顿
 
-    def queryWithIDBtnEvent(self):
-        idBtn = threading.Thread(target=self.queryWithID(), name='queryWithID')
-        idBtn.start()
 
     def queryWithID(self):
         self.comboBox_comList.setEnabled(False)

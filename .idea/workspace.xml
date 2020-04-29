@@ -5,8 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e7ff055a-e122-426c-82ad-44ec2b6e54a0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/QKeyQuery/QQuery_1.0.1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QKeyQuery/QQuery_1.1.1.py" beforeDir="false" afterPath="$PROJECT_DIR$/QKeyQuery/QQuery_1.1.1.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/QKeyQuery/QQuery_1.0.2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QKeyQuery/QQuery_1.0.1.py" beforeDir="false" afterPath="$PROJECT_DIR$/QKeyQuery/QQuery_1.0.1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QKeyQuery/QQuery_1.0.py" beforeDir="false" afterPath="$PROJECT_DIR$/QKeyQuery/QQuery_1.0.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thread/threadEx2.py" beforeDir="false" afterPath="$PROJECT_DIR$/threadStudy/threadEx2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thread/threadEx3.py" beforeDir="false" afterPath="$PROJECT_DIR$/threadStudy/threadEx3.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/thread/threadex1.py" beforeDir="false" afterPath="$PROJECT_DIR$/threadStudy/threadex1.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,7 +20,20 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375" />
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/QKeyQuery/QQuery_1.0.1.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-425">
+              <caret line="353" column="45" selection-start-line="353" selection-start-column="45" selection-end-line="353" selection-end-column="45" />
+              <folding>
+                <element signature="e#200#235#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -25,6 +43,7 @@
       <find>radioButton_Console</find>
       <find>debugMuanulMode</find>
       <find>key</find>
+      <find>thread</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -34,23 +53,15 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/QKeyQuery/QQuery_1.1.1.py" />
+        <option value="$PROJECT_DIR$/QKeyQuery/QQuery_1.0.py" />
+        <option value="$PROJECT_DIR$/QKeyQuery/QQuery_1.0.2.py" />
         <option value="$PROJECT_DIR$/QKeyQuery/QQuery_1.0.1.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectConfigurationFiles">
-    <option name="files">
-      <list>
-        <option value="$PROJECT_DIR$/.idea/quectelWork.iml" />
-        <option value="$PROJECT_DIR$/.idea/misc.xml" />
-        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
-        <option value="$PROJECT_DIR$/.idea/modules.xml" />
-      </list>
-    </option>
-  </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-1891" />
-    <option name="y" value="-93" />
+    <option name="x" value="28" />
+    <option name="y" value="5" />
     <option name="width" value="1898" />
     <option name="height" value="1047" />
   </component>
@@ -59,22 +70,13 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="quectelWork" type="b2602c69:ProjectViewProjectNode" />
               <item name="quectelWork" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="quectelWork" type="b2602c69:ProjectViewProjectNode" />
-              <item name="quectelWork" type="462c0819:PsiDirectoryNode" />
-              <item name="fastboot" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="quectelWork" type="b2602c69:ProjectViewProjectNode" />
-              <item name="quectelWork" type="462c0819:PsiDirectoryNode" />
-              <item name="QCOM" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="quectelWork" type="b2602c69:ProjectViewProjectNode" />
@@ -89,20 +91,21 @@
             <path>
               <item name="quectelWork" type="b2602c69:ProjectViewProjectNode" />
               <item name="quectelWork" type="462c0819:PsiDirectoryNode" />
-              <item name="thread" type="462c0819:PsiDirectoryNode" />
+              <item name="threadStudy" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/QKeyQuery" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -122,6 +125,28 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.QQuery_1.0.1">
+    <configuration name="QQuery_1.0" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="quectelWork" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/QKeyQuery" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/QKeyQuery/QQuery_1.0.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="QQuery_1.0.1" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="quectelWork" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -188,7 +213,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="pyserial_demo" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="pydev_monkey" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="quectelWork" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -196,34 +221,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Pyserial-Demo-master" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_bundle" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Pyserial-Demo-master/pyserial_demo.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="ui_demo_1" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="quectelWork" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Pyserial-Demo-master" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Pyserial-Demo-master/ui_demo_1.py" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_bundle/pydev_monkey.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -235,10 +238,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.QQuery_1.0.1" />
+        <item itemvalue="Python.QQuery_1.0" />
+        <item itemvalue="Python.pydev_monkey" />
         <item itemvalue="Python.fastbootApp_v1.2" />
         <item itemvalue="Python.QQuery_1.1" />
-        <item itemvalue="Python.pyserial_demo" />
-        <item itemvalue="Python.ui_demo_1" />
       </list>
     </recent_temporary>
   </component>
@@ -254,22 +257,23 @@
       <updated>1587650722544</updated>
       <workItem from="1587650737010" duration="2587000" />
       <workItem from="1587696469406" duration="10679000" />
+      <workItem from="1588120815335" duration="3681000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13266000" />
+    <option name="totallyTimeSpent" value="16947000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1891" y="-93" width="1898" height="1047" extended-state="0" />
+    <frame x="28" y="5" width="1898" height="1047" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1430131" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14465065" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3830735" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3986637" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.3986637" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -277,8 +281,8 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" />
-      <window_info anchor="bottom" id="Python Console" order="12" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.32962137" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.32962137" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -291,9 +295,11 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/quectelWork$ui_demo_1.coverage" NAME="ui_demo_1 Coverage Results" MODIFIED="1587696569843" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Pyserial-Demo-master" />
+    <SUITE FILE_PATH="coverage/quectelWork$QQuery_1_0.coverage" NAME="QQuery_1.0 Coverage Results" MODIFIED="1588124006591" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/QKeyQuery" />
+    <SUITE FILE_PATH="coverage/quectelWork$pydev_monkey.coverage" NAME="pydev_monkey Coverage Results" MODIFIED="1588122520429" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_bundle" />
     <SUITE FILE_PATH="coverage/quectelWork$QQuery_1_1_1.coverage" NAME="QQuery_1.1.1 Coverage Results" MODIFIED="1587691323248" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/QKeyQuery" />
     <SUITE FILE_PATH="coverage/quectelWork$fastbootApp_v1_2.coverage" NAME="fastbootApp_v1.2 Coverage Results" MODIFIED="1587705023690" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/fastboot" />
-    <SUITE FILE_PATH="coverage/quectelWork$QQuery_1_0_1.coverage" NAME="QQuery_1.0.1 Coverage Results" MODIFIED="1587711213167" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/QKeyQuery" />
+    <SUITE FILE_PATH="coverage/quectelWork$QQuery_1_0_1.coverage" NAME="QQuery_1.0.1 Coverage Results" MODIFIED="1588124685720" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/QKeyQuery" />
     <SUITE FILE_PATH="coverage/quectelWork$pyserial_demo.coverage" NAME="pyserial_demo Coverage Results" MODIFIED="1587696737992" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Pyserial-Demo-master" />
     <SUITE FILE_PATH="coverage/quectelWork$QQuery_1_1.coverage" NAME="QQuery_1.1 Coverage Results" MODIFIED="1587696897561" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/QKeyQuery" />
   </component>
@@ -307,34 +313,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/QKeyQuery/QQuery_1.1.py">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QKeyQuery/QQuery_1.0.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_bundle/pydev_monkey.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="725" selection-start-line="725" selection-end-line="725" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QKeyQuery/QQuery_1.0.1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="362" selection-start-line="362" selection-end-line="362" />
-          <folding>
-            <element signature="e#5499#8388#0" />
-            <element signature="e#5812#6454#0" />
-            <element signature="e#6507#7831#0" />
-            <element signature="e#8428#9250#0" />
-            <element signature="e#9617#9950#0" />
-            <element signature="e#13583#13705#0" />
-            <element signature="e#13740#13765#0" />
-            <element signature="e#17195#17710#0" />
-            <element signature="e#17753#18181#0" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/fastboot/fastbootApp_v1.2.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -358,6 +336,52 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="392">
           <caret line="59" column="4" lean-forward="true" selection-start-line="59" selection-start-column="4" selection-end-line="59" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_bundle/pydev_monkey.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="725" column="80" selection-start-line="725" selection-start-column="80" selection-end-line="725" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QKeyQuery/QQuery_1.0.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="892">
+          <caret line="41" column="61" selection-start-line="41" selection-start-column="61" selection-end-line="41" selection-end-column="61" />
+          <folding>
+            <element signature="e#200#235#0" expanded="true" />
+            <element signature="e#5499#8388#0" />
+            <element signature="e#5527#5774#0" />
+            <element signature="e#6507#7831#0" />
+            <element signature="e#7882#8388#0" />
+            <element signature="e#8428#9250#0" />
+            <element signature="e#8609#8949#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QKeyQuery/QQuery_1.0.2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3874">
+          <caret line="304" column="4" selection-start-line="304" selection-start-column="4" selection-end-line="304" selection-end-column="4" />
+          <folding>
+            <element signature="e#200#235#0" expanded="true" />
+            <element signature="e#9980#12344#0" />
+            <element signature="e#12382#13408#0" />
+            <element signature="e#13438#13560#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QKeyQuery/QQuery_1.0.1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-425">
+          <caret line="353" column="45" selection-start-line="353" selection-start-column="45" selection-end-line="353" selection-end-column="45" />
+          <folding>
+            <element signature="e#200#235#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

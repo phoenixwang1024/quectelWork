@@ -328,7 +328,7 @@ class MainWin(QMainWindow,Ui_MainWindow):
                         break
                     else:
                         if self.ser.isOpen():
-                            command = "root" + '\r\n'
+                            command = "AT+QADBKEY?" + '\r\n'
                             atCommand = command.encode('utf-8')
                             self.ser.write(atCommand)
                             time.sleep(3)

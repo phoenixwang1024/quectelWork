@@ -1,0 +1,232 @@
+ati+csub
+Quectel
+EC25
+Revision: EC25EUXGAR08A03M1G
+
+SubEdition: V06
+
+OK
+at+qmbncfg="list"
++QMBNCFG: "List",0,0,0,"ROW_Generic_3GPP",0x05010820,201905141
++QMBNCFG: "List",1,0,0,"TW_Mobile_China_VoLTE",0x05800301,201905211
++QMBNCFG: "List",2,0,0,"Bouygues_France_VoLTE",0x05800101,201905211
++QMBNCFG: "List",3,0,0,"Telstra-Commercial_VoLTE",0x05800713,201904181
++QMBNCFG: "List",4,0,0,"Reliance_OpnMkt",0x05011B38,202003251
++QMBNCFG: "List",5,0,0,"Commercial-Smartfren",0x0501250A,201904231
++QMBNCFG: "List",6,0,0,"VF_Germany_VoLTE",0x0501041C,201905211
++QMBNCFG: "List",7,0,0,"Commercial-DT",0x05011F1C,201905311
++QMBNCFG: "List",8,0,0,"STC_Saudi_VoLTE",0x0501FE01,201912231
+                                                        
+OK                                                      
+at+qmultimbn="list"                                     
++QMULTIMBN: "list",0,"multi-mbn",0xEE00010A,000000000   
++QMULTIMBN: "list",1,"ROW_Generic_3GPP",0x05010820,201905141
++QMULTIMBN: "list",2,"TW_Mobile_China_VoLTE",0x05800301,201905211               
++QMULTIMBN: "list",3,"Bouygues_France_VoLTE",0x05800101,201905211               
++QMULTIMBN: "list",4,"Telstra-Commercial_VoLTE",0x05800713,201904181            
++QMULTIMBN: "list",5,"Reliance_OpnMkt",0x05011B38,202003251                     
++QMULTIMBN: "list",6,"Commercial-Smartfren",0x0501250A,201904231                
++QMULTIMBN: "list",7,"VF_Germany_VoLTE",0x0501041C,201905211                    
++QMULTIMBN: "list",8,"Commercial-DT",0x05011F1C,201905311                       
++QMULTIMBN: "list",9,"STC_Saudi_VoLTE",0x0501FE01,201912231                     
+                                                                                
+OK                                                                              
+ati+csub                                                                        
+Quectel                                                                         
+EC25                                                                            
+Revision: EC25EUXGAR08A02M1G                                                    
+                                                                                
+SubEdition: V02                                                                 
+                                                                                
+OK                                                                              
+at+qmbncfg="list"                                                               
++QMBNCFG: "List",0,0,0,"ROW_Generic_3GPP",0x0501081F,201901141                  
++QMBNCFG: "List",1,0,0,"TW_Mobile_China_VoLTE",0x05800301,201905211             
++QMBNCFG: "List",2,0,0,"Bouygues_France_VoLTE",0x05800101,201905211             
++QMBNCFG: "List",3,0,0,"Telstra-Commercial_VoLTE",0x05800713,201904181          
++QMBNCFG: "List",4,0,0,"Reliance_OpnMkt",0x05011B38,201910161                   
++QMBNCFG: "List",5,0,0,"Commercial-Smartfren",0x0501250A,201904231              
++QMBNCFG: "List",6,0,0,"VF_Germany_VoLTE",0x0502041C,201903181                  
++QMBNCFG: "List",7,0,0,"Commercial-DT",0x05011F1C,201905311                     
++QMBNCFG: "List",8,0,0,"STC_Saudi_VoLTE",0x0501FE01,201912231                   
+                                                                                
+OK                                                                              
+at+qmultimbn="list"                                                             
++QMULTIMBN: "list",0,"multi-mbn",0xEE000109,000000000                           
++QMULTIMBN: "list",1,"ROW_Generic_3GPP",0x0501081F,201901141                    
++QMULTIMBN: "list",2,"TW_Mobile_China_VoLTE",0x05800301,201905211               
++QMULTIMBN: "list",3,"Bouygues_France_VoLTE",0x05800101,201905211               
++QMULTIMBN: "list",4,"Telstra-Commercial_VoLTE",0x05800713,201904181            
++QMULTIMBN: "list",5,"Reliance_OpnMkt",0x05011B38,201910161                     
++QMULTIMBN: "list",6,"Commercial-Smartfren",0x0501250A,201904231                
++QMULTIMBN: "list",7,"VF_Germany_VoLTE",0x0502041C,201903181                    
++QMULTIMBN: "list",8,"Commercial-DT",0x05011F1C,201905311                       
++QMULTIMBN: "list",9,"STC_Saudi_VoLTE",0x0501FE01,201912231                     
+                                                                                
+OK                                                                              
+ati+csub                                                                        
+Quectel                                                                         
+EC25                                                                            
+Revision: EC25EUXGAR08A03M1G                                                    
+                                                                                
+SubEdition: V06                                                                 
+                                                                                
+OK                                                                              
+at+qmbncfg="list"                                                               
++QMBNCFG: "List",0,0,0,"ROW_Generic_3GPP",0x05010820,201905141                  
++QMBNCFG: "List",1,0,0,"TW_Mobile_China_VoLTE",0x05800301,201905211             
++QMBNCFG: "List",2,0,0,"Bouygues_France_VoLTE",0x05800101,201905211             
++QMBNCFG: "List",3,0,0,"Telstra-Commercial_VoLTE",0x05800713,201904181          
++QMBNCFG: "List",4,0,0,"Reliance_OpnMkt",0x05011B38,202003251                   
++QMBNCFG: "List",5,0,0,"Commercial-Smartfren",0x0501250A,201904231              
++QMBNCFG: "List",6,0,0,"VF_Germany_VoLTE",0x0501041C,201905211                  
++QMBNCFG: "List",7,0,0,"Commercial-DT",0x05011F1C,201905311                     
++QMBNCFG: "List",8,0,0,"STC_Saudi_VoLTE",0x0501FE01,201912231                   
+                                                                                
+OK                                                                              
+at+qmultimbn="list"                                                             
++QMULTIMBN: "list",0,"multi-mbn",0xEE00010A,000000000                           
++QMULTIMBN: "list",1,"ROW_Generic_3GPP",0x05010820,201905141                    
++QMULTIMBN: "list",2,"TW_Mobile_China_VoLTE",0x05800301,201905211               
++QMULTIMBN: "list",3,"Bouygues_France_VoLTE",0x05800101,201905211               
++QMULTIMBN: "list",4,"Telstra-Commercial_VoLTE",0x05800713,201904181            
++QMULTIMBN: "list",5,"Reliance_OpnMkt",0x05011B38,202003251                     
++QMULTIMBN: "list",6,"Commercial-Smartfren",0x0501250A,201904231                
++QMULTIMBN: "list",7,"VF_Germany_VoLTE",0x0501041C,201905211                    
++QMULTIMBN: "list",8,"Commercial-DT",0x05011F1C,201905311                       
++QMULTIMBN: "list",9,"STC_Saudi_VoLTE",0x0501FE01,201912231                     
+                                                                                
+OK                                                                              
+Aati+csub                                                                       
+Quectel                                                                         
+EC25                                                                            
+Revision: EC25EUXGAR08A02M1G                                                    
+                                                                                
+SubEdition: V02                                                                 
+                                                                                
+OK                                                                              
+at+qmbncfg="list"                                                               
++QMBNCFG: "List",0,0,0,"ROW_Generic_3GPP",0x0501081F,201901141                  
++QMBNCFG: "List",1,0,0,"TW_Mobile_China_VoLTE",0x05800301,201905211             
++QMBNCFG: "List",2,0,0,"Bouygues_France_VoLTE",0x05800101,201905211             
++QMBNCFG: "List",3,0,0,"Telstra-Commercial_VoLTE",0x05800713,201904181          
++QMBNCFG: "List",4,0,0,"Reliance_OpnMkt",0x05011B38,201910161                   
++QMBNCFG: "List",5,0,0,"Commercial-Smartfren",0x0501250A,201904231              
++QMBNCFG: "List",6,0,0,"VF_Germany_VoLTE",0x0502041C,201903181                  
++QMBNCFG: "List",7,0,0,"Commercial-DT",0x05011F1C,201905311                     
++QMBNCFG: "List",8,0,0,"STC_Saudi_VoLTE",0x0501FE01,201912231                   
+                                                                                
+OK                                                                              
+at+qmultimbn="list"                                                             
++QMULTIMBN: "list",0,"multi-mbn",0xEE000109,000000000                           
++QMULTIMBN: "list",1,"ROW_Generic_3GPP",0x0501081F,201901141                    
++QMULTIMBN: "list",2,"TW_Mobile_China_VoLTE",0x05800301,201905211               
++QMULTIMBN: "list",3,"Bouygues_France_VoLTE",0x05800101,201905211               
++QMULTIMBN: "list",4,"Telstra-Commercial_VoLTE",0x05800713,201904181            
++QMULTIMBN: "list",5,"Reliance_OpnMkt",0x05011B38,201910161                     
++QMULTIMBN: "list",6,"Commercial-Smartfren",0x0501250A,201904231                
++QMULTIMBN: "list",7,"VF_Germany_VoLTE",0x0502041C,201903181                    
++QMULTIMBN: "list",8,"Commercial-DT",0x05011F1C,201905311                       
++QMULTIMBN: "list",9,"STC_Saudi_VoLTE",0x0501FE01,201912231                     
+                                                                                
+OK                                                                              
+ati+csub                                                                        
+Quectel                                                                         
+EC25                                                                            
+Revision: EC25EUXGAR08A03M1G                                                    
+                                                                                
+SubEdition: V06                                                                 
+                                                                                
+OK                                                                              
+at+qmbncfg="list"                                                               
++QMBNCFG: "List",0,0,0,"ROW_Generic_3GPP",0x05010820,201905141                  
++QMBNCFG: "List",1,0,0,"TW_Mobile_China_VoLTE",0x05800301,201905211             
++QMBNCFG: "List",2,0,0,"Bouygues_France_VoLTE",0x05800101,201905211             
++QMBNCFG: "List",3,0,0,"Telstra-Commercial_VoLTE",0x05800713,201904181          
++QMBNCFG: "List",4,0,0,"Reliance_OpnMkt",0x05011B38,202003251                   
++QMBNCFG: "List",5,0,0,"Commercial-Smartfren",0x0501250A,201904231              
++QMBNCFG: "List",6,0,0,"VF_Germany_VoLTE",0x0501041C,201905211                  
++QMBNCFG: "List",7,0,0,"Commercial-DT",0x05011F1C,201905311                     
++QMBNCFG: "List",8,0,0,"STC_Saudi_VoLTE",0x0501FE01,201912231                   
+                                                                                
+OK                                                                              
+at+qmultimbn="list"                                                             
++QMULTIMBN: "list",0,"multi-mbn",0xEE00010A,000000000                           
++QMULTIMBN: "list",1,"ROW_Generic_3GPP",0x05010820,201905141                    
++QMULTIMBN: "list",2,"TW_Mobile_China_VoLTE",0x05800301,201905211               
++QMULTIMBN: "list",3,"Bouygues_France_VoLTE",0x05800101,201905211               
++QMULTIMBN: "list",4,"Telstra-Commercial_VoLTE",0x05800713,201904181            
++QMULTIMBN: "list",5,"Reliance_OpnMkt",0x05011B38,202003251                     
++QMULTIMBN: "list",6,"Commercial-Smartfren",0x0501250A,201904231                
++QMULTIMBN: "list",7,"VF_Germany_VoLTE",0x0501041C,201905211                    
++QMULTIMBN: "list",8,"Commercial-DT",0x05011F1C,201905311                       
++QMULTIMBN: "list",9,"STC_Saudi_VoLTE",0x0501FE01,201912231                     
+                                                                                
+OK                                                                              
+ati+csub                                                                        
+Quectel                                                                         
+EC25                                                                            
+Revision: EC25EUXGAR08A02M1G                                                    
+                                                                                
+SubEdition: V02                                                                 
+                                                                                
+OK                                                                              
+at+qmbncfg="list"                                                               
++QMBNCFG: "List",0,0,0,"ROW_Generic_3GPP",0x0501081F,201901141                  
++QMBNCFG: "List",1,0,0,"TW_Mobile_China_VoLTE",0x05800301,201905211             
++QMBNCFG: "List",2,0,0,"Bouygues_France_VoLTE",0x05800101,201905211             
++QMBNCFG: "List",3,0,0,"Telstra-Commercial_VoLTE",0x05800713,201904181          
++QMBNCFG: "List",4,0,0,"Reliance_OpnMkt",0x05011B38,201910161                   
++QMBNCFG: "List",5,0,0,"Commercial-Smartfren",0x0501250A,201904231              
++QMBNCFG: "List",6,0,0,"VF_Germany_VoLTE",0x0502041C,201903181                  
++QMBNCFG: "List",7,0,0,"Commercial-DT",0x05011F1C,201905311                     
++QMBNCFG: "List",8,0,0,"STC_Saudi_VoLTE",0x0501FE01,201912231                   
+                                                                                
+OK                                                                              
+at+qmultimbn="list"                                                             
++QMULTIMBN: "list",0,"multi-mbn",0xEE000109,000000000                           
++QMULTIMBN: "list",1,"ROW_Generic_3GPP",0x0501081F,201901141                    
++QMULTIMBN: "list",2,"TW_Mobile_China_VoLTE",0x05800301,201905211               
++QMULTIMBN: "list",3,"Bouygues_France_VoLTE",0x05800101,201905211               
++QMULTIMBN: "list",4,"Telstra-Commercial_VoLTE",0x05800713,201904181            
++QMULTIMBN: "list",5,"Reliance_OpnMkt",0x05011B38,201910161                     
++QMULTIMBN: "list",6,"Commercial-Smartfren",0x0501250A,201904231                
++QMULTIMBN: "list",7,"VF_Germany_VoLTE",0x0502041C,201903181                    
++QMULTIMBN: "list",8,"Commercial-DT",0x05011F1C,201905311                       
++QMULTIMBN: "list",9,"STC_Saudi_VoLTE",0x0501FE01,201912231                     
+                                                                                
+OK                                                                              
+ati+csub                                                                        
+Quectel                                                                         
+EC25                                                                            
+Revision: EC25EUXGAR08A03M1G                                                    
+                                                                                
+SubEdition: V06                                                                 
+                                                                                
+OK                                                                              
+at+qmbncfg="list"                                                               
++QMBNCFG: "List",0,0,0,"ROW_Generic_3GPP",0x05010820,201905141                  
++QMBNCFG: "List",1,0,0,"TW_Mobile_China_VoLTE",0x05800301,201905211             
++QMBNCFG: "List",2,0,0,"Bouygues_France_VoLTE",0x05800101,201905211             
++QMBNCFG: "List",3,0,0,"Telstra-Commercial_VoLTE",0x05800713,201904181          
++QMBNCFG: "List",4,0,0,"Reliance_OpnMkt",0x05011B38,202003251                   
++QMBNCFG: "List",5,0,0,"Commercial-Smartfren",0x0501250A,201904231              
++QMBNCFG: "List",6,0,0,"VF_Germany_VoLTE",0x0501041C,201905211                  
++QMBNCFG: "List",7,0,0,"Commercial-DT",0x05011F1C,201905311                     
++QMBNCFG: "List",8,0,0,"STC_Saudi_VoLTE",0x0501FE01,201912231                   
+                                                                                
+OK                                                                              
+at+qmultimbn="list"                                                             
++QMULTIMBN: "list",0,"multi-mbn",0xEE00010A,000000000                           
++QMULTIMBN: "list",1,"ROW_Generic_3GPP",0x05010820,201905141                    
++QMULTIMBN: "list",2,"TW_Mobile_China_VoLTE",0x05800301,201905211               
++QMULTIMBN: "list",3,"Bouygues_France_VoLTE",0x05800101,201905211               
++QMULTIMBN: "list",4,"Telstra-Commercial_VoLTE",0x05800713,201904181            
++QMULTIMBN: "list",5,"Reliance_OpnMkt",0x05011B38,202003251                     
++QMULTIMBN: "list",6,"Commercial-Smartfren",0x0501250A,201904231                
++QMULTIMBN: "list",7,"VF_Germany_VoLTE",0x0501041C,201905211                    
++QMULTIMBN: "list",8,"Commercial-DT",0x05011F1C,201905311                       
++QMULTIMBN: "list",9,"STC_Saudi_VoLTE",0x0501FE01,201912231                     
+                                                                                
+OK                                                                              
+
